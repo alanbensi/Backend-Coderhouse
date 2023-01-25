@@ -11,7 +11,6 @@ class ProductManager {
     async addProducts(title, description, price, thumbnail, code, stock) {
 
         const getProducts = await this.getProducts(); //array con todos los productos
-
         let newProduct = {
             id: await this.addNewId(getProducts),
             title,
@@ -48,7 +47,7 @@ class ProductManager {
         const getProducts = await this.getProducts();
         const idProducto = getProducts.find (product => product.id === id);
         if (!idProducto) {
-            console.log ("Error. This product is not found");
+            return "Error. This product is not found";
         } else {
             console.log (idProducto);
             return idProducto;
@@ -99,16 +98,13 @@ class ProductManager {
 
 
 const run = async () => {
-    let product = new ProductManager ("products.json"); 
-
-    await product.deleteProduct(1);
-    await product.deleteProduct(2);
-    await product.deleteProduct(4);
-    await product.addProducts("abc", "abc", 200, "abc.jpg", 1, 257);
+    let product = new ProductManager ("./src/products.json"); 
 }
 
 run (); 
 
+
+module.exports = ProductManager;
 // console.log (product.updateProduct(2,"price", 50000), "ESTE ES EL UPDATE");
 
 // product.deleteProduct (3);
