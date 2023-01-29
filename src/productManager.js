@@ -18,19 +18,20 @@ class ProductManager {
             price,
             thumbnail,
             code,
-            stock
+            stock,
+            status:true
         } 
         try {
             if (newProduct.title && newProduct.description && newProduct.price && newProduct.thumbnail && newProduct.code && newProduct.stock &&  await this.validateCode(code, getProducts)) {
-                console.log ("hola", getProducts)
+                console.log ("hola", getProducts);
                 getProducts.push(newProduct);
                 console.log("The product was succesfully added");
-                fs.promises.writeFile(this.path, JSON.stringify(getProducts))
+                await fs.promises.writeFile(this.path, JSON.stringify(getProducts));
             } else {
                 console.log("Error. Please complete all the fields");
             }
         } catch (error) {
-            console.log (error)
+            console.log (error);
         }
     }
     
@@ -49,7 +50,6 @@ class ProductManager {
         if (!idProducto) {
             return "Error. This product is not found";
         } else {
-            console.log (idProducto);
             return idProducto;
         }
     }
@@ -64,7 +64,7 @@ class ProductManager {
         return result;
     }
 
-    addNewId (getProducts) {
+    async addNewId (getProducts) {
         let newID; 
         if (getProducts.length === 0 ){
             newID = 1
@@ -98,7 +98,7 @@ class ProductManager {
 
 
 const run = async () => {
-    let product = new ProductManager ("./src/products.json"); 
+    let product = new ProductManager ("./src/Routes/products/products.json"); 
 }
 
 run (); 
