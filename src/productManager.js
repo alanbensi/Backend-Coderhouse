@@ -23,7 +23,6 @@ class ProductManager {
         } 
         try {
             if (newProduct.title && newProduct.description && newProduct.price && newProduct.thumbnail && newProduct.code && newProduct.stock &&  await this.validateCode(code, getProducts)) {
-                console.log ("hola", getProducts);
                 getProducts.push(newProduct);
                 console.log("The product was succesfully added");
                 await fs.promises.writeFile(this.path, JSON.stringify(getProducts));
@@ -46,11 +45,11 @@ class ProductManager {
 
     async getProductByID (id) {
         const getProducts = await this.getProducts();
-        const idProducto = getProducts.find (product => product.id === id);
-        if (!idProducto) {
-            return "Error. This product is not found";
+        const productID = getProducts.find (product => product.id === id);
+        if (!productID) {
+            throw new error ("Error. This product is not found");
         } else {
-            return idProducto;
+            return productID;
         }
     }
 
@@ -78,7 +77,7 @@ class ProductManager {
         const getProducts = await this.getProducts();
         const idProducto = getProducts.find(product => product.id === id);
         if (!idProducto) {
-            console.log("Error. This product is not found");
+            throw new Error ("Error. This product is not found");
         } else {
             idProducto[field] = value;
             await fs.promises.writeFile(this.path, JSON.stringify(getProducts));
