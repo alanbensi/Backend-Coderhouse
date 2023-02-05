@@ -1,6 +1,7 @@
 const express = require ("express"); 
 const exphbs = require ("express-handlebars");
 const app = express();
+const { Server } = require("socket.io");
 const path = require("path");
 const cartsRouter = require ("./Routes/carts/carts");
 const productsRouter = require ("./Routes/products/products");
@@ -22,8 +23,19 @@ app.use ('/api/products', productsRouter);
 app.use ('/api/carts', cartsRouter);
 
 
+const httpServer = app.listen (8080, ()=> console.log ("app running on port 8080"));
 
-app.listen (8080, ()=> console.log ("app running on port 8080"));
+httpServer.on ("error", error => console.log (error));
 
-app.on ("error", error => console.log (error));
+const socketServer = new Server(httpServer);
 
+app.get ("/realTimeProducts", (req,res) => {
+    socketServer.on ("connection", socket => {
+        console.log ("CLIENTE NUEEVO")
+    })
+    app.render ("realTimeProducts", {})
+})
+
+
+
+module.exports = httpServer;
