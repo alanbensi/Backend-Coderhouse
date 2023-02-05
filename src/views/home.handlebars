@@ -1,0 +1,15 @@
+<main class="mainContainer">
+    <section>
+        <h1>Los productos almacenados actualmente son: </h1>
+        <div class="productContainer">
+            {{#each allProducts}}
+                <div>
+                    <h2>PRODUCTO {{this.title}}</h2>
+                    <p>Descripción: {{this.description}}</p>
+                    <p>Precio: {{this.price}}</p>
+                    <p>Stock: {{this.stock}}</p>
+                </div>
+            {{/each}}
+        </div>
+    </section>
+</main>

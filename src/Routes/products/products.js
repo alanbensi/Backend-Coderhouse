@@ -30,7 +30,6 @@ productsRouter.get ("/:pid", async (req,res) => {
     } catch (error) {
         res.status(400).send({ status: "Error", message: "Error. The product wasn´t found" })
     }
-    
 })
 
 productsRouter.post ("/", async (req, res) => {
@@ -57,8 +56,12 @@ productsRouter.put ("/:pid", async (req,res) => {
 productsRouter.delete ("/:pid", async (req,res) => {
     try {
         const idProduct = req.params.pid; 
-        const deleteProduct = await manager.deleteProduct (parseInt(idProduct));
-        res.send ({status: "Success", product: deleteProduct});
+        if (!idProduct) {
+            throw new Error ("Error. The product doesn´t exists");
+        } else {
+            const deleteProduct = await manager.deleteProduct (parseInt(idProduct));
+            res.send ({status: "Success", product: deleteProduct});
+        }
     } catch (error) {
         res.status(400).send({ status: "Error", message: "Error" })
     }
