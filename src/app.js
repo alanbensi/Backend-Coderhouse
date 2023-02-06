@@ -6,7 +6,7 @@ const path = require("path");
 const cartsRouter = require ("./Routes/carts/carts");
 const productsRouter = require ("./Routes/products/products");
 const viewsRouter = require ("./Routes/views/views");
-
+const ProductManager = require ("./productManager");
 
 app.engine ("handlebars", exphbs.engine());
 app.set('views', path.join(__dirname, "./views"))
@@ -29,12 +29,20 @@ httpServer.on ("error", error => console.log (error));
 
 const socketServer = new Server(httpServer);
 
+
+const manager = new ProductManager(path.join(__dirname, "./Routes/products/products.json"))
+
 app.get ("/realTimeProducts", (req,res) => {
-    socketServer.on ("connection", socket => {
+    socketServer.on ("connection", async socket => {
         console.log ("CLIENTE NUEEVO")
-    })
-    app.render ("realTimeProducts", {})
-})
+        const allProducts = await manager.getProducts(); 
+        socketServer.sockets.io ("products", socket =>{
+            res.render ("realTimeProducts", {allProducts:allProducts});
+        })
+    });
+    res.render ("realTimeProducts", {});
+} )
+
 
 
 

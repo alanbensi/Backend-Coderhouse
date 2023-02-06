@@ -1,4 +1,14 @@
-<h1>hola</h1>
+<main>
+    <section>
+        <h1>PRODUCTOS EN TIEMPO REAL</h1>
+        <div>
+            {{#each allProducts}}
+            <div id="productsClient">
+            </div>
+            {{/each}}
+        </div>
+    </section>
+</main>
 
-<script src="./socket.io/socket.io.js"></script>
-<script src="../public/js/realTimeProducts.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="./js/realTimeProducts.js"></script>
